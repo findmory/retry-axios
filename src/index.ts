@@ -2,8 +2,8 @@ import axios, {
   AxiosError,
   AxiosInstance,
   AxiosRequestConfig,
-  AxiosResponse,
-} from 'axios';
+  AxiosResponse
+} from "axios";
 
 /**
  * Configuration for the Axios `request` method.
@@ -92,6 +92,7 @@ function onFulfilled(res: AxiosResponse) {
 }
 
 function onError(err: AxiosError) {
+  if (!Object.prototype.hasOwnProperty.call(err, "config")) err.config = {};
   const config = (err.config as RaxConfig).raxConfig || {};
   config.currentRetryAttempt = config.currentRetryAttempt || 0;
   config.retry =
@@ -99,11 +100,11 @@ function onError(err: AxiosError) {
   config.retryDelay = config.retryDelay || 100;
   config.instance = config.instance || axios;
   config.httpMethodsToRetry = config.httpMethodsToRetry || [
-    'GET',
-    'HEAD',
-    'PUT',
-    'OPTIONS',
-    'DELETE',
+    "GET",
+    "HEAD",
+    "PUT",
+    "OPTIONS",
+    "DELETE"
   ];
   config.noResponseRetries =
     config.noResponseRetries === undefined || config.noResponseRetries === null
@@ -122,7 +123,7 @@ function onError(err: AxiosError) {
     // 5xx - Retry (Server errors)
     [100, 199],
     [429, 429],
-    [500, 599],
+    [500, 599]
   ];
   config.statusCodesToRetry = config.statusCodesToRetry || retryRanges;
 
